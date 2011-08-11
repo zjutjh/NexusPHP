@@ -149,13 +149,13 @@ $AUTHORITY=array(
 	'userbar' => '2',
 );
 $BASIC=array(
-	'SITENAME' => 'NexusPHP',
-	'BASEURL' => 'localhost',
-	'announce_url' => 'localhost/announce.php',
+	'SITENAME' => 'Kebot',
+	'BASEURL' => 'pt',
+	'announce_url' => 'pt/announce.php',
 	'mysql_host' => 'localhost',
 	'mysql_user' => 'root',
-	'mysql_pass' => 'nexusphprocks',
-	'mysql_db' => 'nexusphp',
+	'mysql_pass' => '123456',
+	'mysql_db' => 'pt',
 );
 $BONUS=array(
 	'donortimes' => '2',
@@ -193,7 +193,7 @@ $BONUS=array(
 $CODE=array(
 	'mainversion' => 'NexusPHP',
 	'subversion' => 'Standard v1.5 Beta 4',
-	'releasedate' => '2010-09-19',
+	'releasedate' => '2010-08-19',
 	'website' => '<a href="http://www.nexusphp.com">http://www.nexusphp.com</a>',
 );
 $MAIN=array(
