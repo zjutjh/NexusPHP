@@ -1,4 +1,8 @@
 <?php
+//ucneter api by @yaofur
+require_once('config/ucenter.php');
+require_once('uc_client/client.php');
+
 require_once("include/bittorrent.php");
 header("Content-Type: text/html; charset=utf-8");
 if (!mkglobal("username:password"))
@@ -6,7 +10,7 @@ if (!mkglobal("username:password"))
 dbconn();
 require_once(get_langfile_path("", false, get_langfolder_cookie()));
 failedloginscheck ();
-cur_user_check () ;
+cur_user_check ();
 
 function bark($text = "")
 {
@@ -19,13 +23,45 @@ if ($iv == "yes")
 $res = sql_query("SELECT id, passhash, secret, enabled, status FROM users WHERE username = " . sqlesc($username));
 $row = mysql_fetch_array($res);
 
-if (!$row)
-	failedlogins();
+#add ucenter login.
+$uc_login = uc_user_login($username,$password);
+dbconn();
+
+#var_dump($uc_login);
+
+if( $uc_login[0]<=0 )
+{
+    //login_failedlogins();
+    failedlogins();
+    //print "No login";
+}
+
+#uc_激活.
+include "activate.php";
+
+if (!$row){
+	print "login success,but need active.";
+        Account::activate($uc_login[1],$uc_login[2],$uc_login[3]);
+
+        $res = sql_query("SELECT id, passhash, secret, enabled, status FROM users WHERE username = " . sqlesc($username));
+        $row = mysql_fetch_array($res);
+}
+
+if($row[passhash]!=md5($row[secret] . $uc_login[2] . $row[secret]))
+{
+
+    Account::updatePass($uc_login[1], md5($row[secret] . $uc_login[2] . $row[secret]) , $row[secret]);
+}
+#end
+
 if ($row['status'] == 'pending')
 	failedlogins($lang_takelogin['std_user_account_unconfirmed']);
 
+/*
+#ignore passhash
 if ($row["passhash"] != md5($row["secret"] . $password . $row["secret"]))
 	login_failedlogins();
+*/
 
 if ($row["enabled"] == "no")
 	bark($lang_takelogin['std_account_disabled']);
