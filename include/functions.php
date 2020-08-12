@@ -448,7 +448,7 @@ function int_check($value,$stdhead = false, $stdfood = true, $die = true, $log =
 	else
 	{
 		if (!is_valid_id($value)) {
-			$msg = "Invalid ID Attempt: Username: ".$CURUSER["username"]." - UserID: ".$CURUSER["id"]." - UserIP : ".getip();
+			$msg = "Invalid ID Attempt: Username: ".$CURUSER["username"]." - UserID: ".$CURUSER["id"]." - UserIP : ".getip()." - IDValue : ".htmlspecialchars($value);//记录详细操作 便于判断用户是否真的违规操作 给予封禁
 			if ($log)
 				write_log($msg,'mod');
 
@@ -471,7 +471,7 @@ function int_check($value,$stdhead = false, $stdfood = true, $die = true, $log =
 
 function is_valid_id($id)
 {
-	return is_numeric($id) && ($id > 0) && (floor($id) == $id);
+	return is_numeric($id) && ($id >= 0) && (floor($id) == $id);
 }
 
 

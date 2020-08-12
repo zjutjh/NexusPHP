@@ -39,6 +39,7 @@ elseif ($_GET["act"]=="addsect"){
 }
 elseif ($_GET["act"] == "edit"){
 	$id = $_GET["id"];
+	int_check($id);
 	$res = @mysql_fetch_array(@sql_query("select * from rules where id='$id'"));
 	stdhead("Edit rules");
 	//print("<td valign=top style=\"padding: 10px;\" colspan=2 align=center>");

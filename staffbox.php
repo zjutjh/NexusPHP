@@ -129,7 +129,7 @@ if ($action == "answermessage") {
         $receiver = 0 + $_GET["receiver"];
 
         int_check($receiver,true);
-
+        int_check($answeringto,true); //防止sql注入
         $res = sql_query("SELECT * FROM users WHERE id=$receiver") or die(mysql_error());
         $user = mysql_fetch_assoc($res);
 
@@ -219,7 +219,7 @@ if ($action == "setanswered") {
     permissiondenied();
 
 $id = 0 + $_GET["id"];
-
+int_check($id,true);
 sql_query ("UPDATE staffmessages SET answered=1, answeredby = $CURUSER[id] WHERE id = $id") or sqlerr();
 $Cache->delete_value('staff_new_message_count');
 header("Refresh: 0; url=staffbox.php?action=viewpm&pmid=$id");
@@ -232,7 +232,7 @@ header("Refresh: 0; url=staffbox.php?action=viewpm&pmid=$id");
 if ($action == "takecontactanswered") {
 	if (get_user_class() < $staffmem_class)
 		permissiondenied();
-
+int_check($_POST[setanswered],true);
 if ($_POST['setdealt']){
 	$res = sql_query ("SELECT id FROM staffmessages WHERE answered=0 AND id IN (" . implode(", ", $_POST[setanswered]) . ")");
 	while ($arr = mysql_fetch_assoc($res))
